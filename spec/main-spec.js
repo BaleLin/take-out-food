@@ -5,7 +5,8 @@ const {formatMenu,
         calculateFirstDiscount,
         calculateSecondDiscount,
         claculateSavemony,
-        claculateSum
+        claculateSum,
+        produceList
 } = require('../main/main');
 const {loadAllItems}=require('../main/items');
 const {loadPromotions}=require('../main/promotions');
@@ -212,3 +213,23 @@ const {loadPromotions}=require('../main/promotions');
     });
 
  });
+ describe('claculateSum', function () {
+
+  it('calculateFirstDiscount', function() {
+  //when
+  let inputs = ["ITEM0013 x 4"];
+  let loadAllItems_text=loadAllItems();
+  //console.log(loadAllItems_text);
+  let loadPromotions_text = loadPromotions();
+  let formatMenu_text=formatMenu(inputs);
+  let detailMenu_text=detailMenu(formatMenu_text,loadAllItems_text);
+  let calculateSubtotal_text = calculateSubtotal(detailMenu_text); 
+  let claculateSavemony_test = claculateSavemony(calculateSubtotal_text,loadPromotions_text);
+  let claculateSum_test = claculateSum(calculateSubtotal_text,claculateSavemony_test);
+  let produceList_test = produceList(calculateSubtotal_text,claculateSavemony_test,claculateSum_test);
+  //then
+  const actualText = 25;
+    expect(claculateSum_test).toEqual(actualText)
+  });
+
+});

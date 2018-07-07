@@ -93,11 +93,34 @@ function claculateSavemony(menudetaleSubtotalObjects,loadPromotions){
 }
 function claculateSum(menudetaleSubtotalObjects,menuDiscountbjects){
     let sum = 0;
-    menudetaleSubtotalObjects.map(menudetaleSubtotalObject=>{
-        sum += menudetaleSubtotalObject.subtotal;
-    });
-    sum -= menuDiscountbjects.saveMoney;
+     menudetaleSubtotalObjects.map(menudetaleSubtotalObject=>{
+            sum += menudetaleSubtotalObject.subtotal;
+        });
+    if(menuDiscountbjects!==null){
+        sum -= menuDiscountbjects.saveMoney;
+    }else{
+        return sum;
+    }
     return sum;
+}
+function produceList(menudetaleSubtotalObjects,menuDiscountbjects,sum){
+  let str="============= 订餐明细 =============\n";
+  for(let detalevariable of menudetaleSubtotalObjects){
+    str+=`${detalevariable.name} x ${detalevariable.count} = ${detalevariable.subtotal}元\n`
+  }
+  if(menuDiscountbjects!==null){
+    str+="-----------------------------------\n";
+      str+="使用优惠:\n";
+      if(menuDiscountbjects.type==="指定菜品半价"){
+        str+=`${menuDiscountbjects.type}(${menuDiscountbjects.tempMenuName})，省${menuDiscountbjects.saveMoney}元\n`
+      }else{
+        str+=`${menuDiscountbjects.type}，省${menuDiscountbjects.saveMoney}元\n`
+      }
+  }
+   str+=`-----------------------------------\n`
+  str+=`总计：${sum}元\n`
+  str+=`===================================\n`
+  console.log(str);
 }
 module.exports = {
     formatMenu,
@@ -106,5 +129,6 @@ module.exports = {
     calculateFirstDiscount,
     calculateSecondDiscount,
     claculateSavemony,
-    claculateSum
+    claculateSum,
+    produceList
 }
