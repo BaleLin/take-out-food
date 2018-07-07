@@ -1,6 +1,6 @@
 // Write your cade below:
 const {loadAllItems}=require('../main/items');
-const {loadPromotions}=require('../main/items');
+const {loadPromotions}=require('../main/promotions');
 function formatMenu(menuCollections){
     let menuObjects = [];
     menuCollections.map(menuCollection =>{
@@ -41,8 +41,25 @@ function calculateSubtotal(menudetaleObjects){
    //console.log(menudetaleSubtotalObjects);
     return menudetaleSubtotalObjects;
 }
+function calculateFirstDiscount(menudetaleSubtotalObjects,loadPromotions){
+    let sum = 0;
+    let menuDiscountbjects = {};
+    menudetaleSubtotalObjects.map(menudetaleSubtotalObject=>{
+        sum += menudetaleSubtotalObject.subtotal;
+    });
+    if(sum>=30){
+        menuDiscountbjects.type = loadPromotions[0].type;
+        menuDiscountbjects.saveMoney = 6;
+    }else{
+        menuDiscountbjects.type = loadPromotions[0].type;
+        menuDiscountbjects.saveMoney = 0;
+    }
+    console.log(menuDiscountbjects);
+    return menuDiscountbjects;
+}
 module.exports = {
     formatMenu,
     detailMenu,
-    calculateSubtotal
+    calculateSubtotal,
+    calculateFirstDiscount
 }
