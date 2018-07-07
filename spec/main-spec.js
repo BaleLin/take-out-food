@@ -4,6 +4,7 @@ const {formatMenu,
         calculateSubtotal,
         calculateFirstDiscount,
         calculateSecondDiscount,
+        claculateSavemony,
         claculateSum
 } = require('../main/main');
 const {loadAllItems}=require('../main/items');
@@ -157,7 +158,7 @@ const {loadPromotions}=require('../main/promotions');
    });
    describe('Take out food', function () {
 
-    it('calculateFirstDiscount', function() {
+    it('calculateSecondDiscount', function() {
     //when
     let inputs = ["ITEM0001 x 1", "ITEM0013 x 2", "ITEM0022 x 1"];
     let loadAllItems_text=loadAllItems();
@@ -169,10 +170,11 @@ const {loadPromotions}=require('../main/promotions');
     let calculateSecondDiscount_text = calculateSecondDiscount(calculateSubtotal_text,loadPromotions_text);
     
     //then
-    const actualText = {type:'指定菜品半价',saveMoney:13}
+    const actualText = {type:'指定菜品半价',saveMoney:13,discountMenuName: [ '黄焖鸡', '凉皮' ]}
       expect(calculateSecondDiscount_text).toEqual(actualText)
     });
-    describe('Take out food', function () {
+  });
+    describe('claculateSum', function () {
 
       it('calculateFirstDiscount', function() {
       //when
@@ -183,11 +185,30 @@ const {loadPromotions}=require('../main/promotions');
       let formatMenu_text=formatMenu(inputs);
       let detailMenu_text=detailMenu(formatMenu_text,loadAllItems_text);
       let calculateSubtotal_text = calculateSubtotal(detailMenu_text); 
-      let calculateSecondDiscount_text = calculateSecondDiscount(calculateSubtotal_text,loadPromotions_text);
+      let claculateSavemony_test = claculateSavemony(calculateSubtotal_text,loadPromotions_text);
       
       //then
-      const actualText = {type:'指定菜品半价',saveMoney:13}
-        expect(calculateSecondDiscount_text).toEqual(actualText)
+      const actualText = {type:'指定菜品半价',saveMoney:13,discountMenuName: [ '黄焖鸡', '凉皮' ]};
+        expect(claculateSavemony_test).toEqual(actualText)
       });
   
    });
+   describe('claculateSum', function () {
+
+    it('calculateFirstDiscount', function() {
+    //when
+    let inputs = ["ITEM0001 x 1", "ITEM0013 x 2", "ITEM0022 x 1"];
+    let loadAllItems_text=loadAllItems();
+    //console.log(loadAllItems_text);
+    let loadPromotions_text = loadPromotions();
+    let formatMenu_text=formatMenu(inputs);
+    let detailMenu_text=detailMenu(formatMenu_text,loadAllItems_text);
+    let calculateSubtotal_text = calculateSubtotal(detailMenu_text); 
+    let claculateSavemony_test = claculateSavemony(calculateSubtotal_text,loadPromotions_text);
+    let claculateSum_test = claculateSum(calculateSubtotal_text,claculateSavemony_test);
+    //then
+    const actualText = 25;
+      expect(claculateSum_test).toEqual(actualText)
+    });
+
+ });

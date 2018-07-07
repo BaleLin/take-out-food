@@ -60,26 +60,44 @@ function calculateFirstDiscount(menudetaleSubtotalObjects,loadPromotions){
 function calculateSecondDiscount(menudetaleSubtotalObjects,loadPromotions){
     let sum = 0;
     let menuDiscountbjects = {};
+    var tempMenuName = [];
     menudetaleSubtotalObjects.map(menudetaleSubtotalObject=>{
         loadPromotions[1].items.map(loadPromotion=>{
             if(menudetaleSubtotalObject.id===loadPromotion){
-                sum += (menudetaleSubtotalObject.subtotal/2);
+                sum += (menudetaleSubtotalObject.subtotal/2); 
+                tempMenuName.push(menudetaleSubtotalObject.name);
             }
            });
     });
     menuDiscountbjects.type = loadPromotions[1].type;
     menuDiscountbjects.saveMoney = sum;
+    menuDiscountbjects.discountMenuName = tempMenuName;
     console.log(menuDiscountbjects);
     return menuDiscountbjects;
 }
-function claculateSum(menudetaleSubtotalObjects,loadPromotions){
+function claculateSavemony(menudetaleSubtotalObjects,loadPromotions){
+    
     let firstDiscount = calculateFirstDiscount(menudetaleSubtotalObjects,loadPromotions);
     let secondDiscount = calculateSecondDiscount(menudetaleSubtotalObjects,loadPromotions);
-    if(firstDiscount.saveMoney>secondDiscount.saveMoney){
-        return firstDiscount;
+    if(firstDiscount.saveMoney!==0&&secondDiscount.saveMoney!==0){
+        if(firstDiscount.saveMoney>secondDiscount.saveMoney){
+            return firstDiscount;
+        }
+        else{
+            return secondDiscount;
+        }
     }else{
-        return secondDiscount;
+        return null;
     }
+   
+}
+function claculateSum(menudetaleSubtotalObjects,menuDiscountbjects){
+    let sum = 0;
+    menudetaleSubtotalObjects.map(menudetaleSubtotalObject=>{
+        sum += menudetaleSubtotalObject.subtotal;
+    });
+    sum -= menuDiscountbjects.saveMoney;
+    return sum;
 }
 module.exports = {
     formatMenu,
@@ -87,5 +105,6 @@ module.exports = {
     calculateSubtotal,
     calculateFirstDiscount,
     calculateSecondDiscount,
+    claculateSavemony,
     claculateSum
 }
