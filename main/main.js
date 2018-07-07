@@ -1,12 +1,38 @@
 // Write your cade below:
-function caclRemaindar() {};
+function formatMenu(menuCollections){
+    let menuObjects = [];
+    menuCollections.map(menuCollection =>{
+            let spil = menuCollection.split("x");
+            menuObjects.push({
+                id:spil[0],
+                count:parseInt(spil[1])
+            });
+        }
+    );
+    console.log(menuObjects);
+    return menuObjects;
+}
+function detailMenu(menuObjects,loadAllItems){
+    let menudetaleObjects = {};
+    menuObjects.map(
+        menuObject=>{loadAllItems.map(
+                loadAllItem=>{
+                     if(menuObject.id===loadAllItem.id){
+                        menudetaleObjects.push({
+                            id:menuObject.id,
+                            name:loadAllItem.name,
+                            count:menuObject.count,
+                            price:menuObject.price
 
-function caclSum() {};
-
-function caclSumInConditon() {};
-
+                        })
+                    }
+                }
+            ); 
+        }
+    );
+    console(menudetaleObjects);
+    return menudetaleObjects;
+}
 module.exports = {
-    caclRemaindar,
-    caclSum,
-    caclSumInConditon
+    formatMenu
 }
