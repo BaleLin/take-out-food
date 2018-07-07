@@ -29,15 +29,16 @@ function detailMenu(menuObjects,loadAllItems){
                        });
                    }
                }
-            }
+            } 
     return menudetaleObjects;
 }
 function calculateSubtotal(menudetaleObjects){
     let menudetaleSubtotalObjects = [];
     menudetaleObjects.map(menudetaleObject=>{
-        menudetaleObject.subtotal=menudetaleObjects.price*menudetaleObjects.count;
+        menudetaleObject.subtotal=parseInt(menudetaleObject.price)*parseInt(menudetaleObject.count);
         menudetaleSubtotalObjects.push(menudetaleObject);
     });
+   //console.log(menudetaleSubtotalObjects);
     return menudetaleSubtotalObjects;
 }
 module.exports = {

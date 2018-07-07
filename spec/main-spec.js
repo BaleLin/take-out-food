@@ -127,7 +127,7 @@ const {loadPromotions}=require('../main/items');
       name: '凉皮',
       count:1,
       price: 8.00,
-      subtotal:16.00
+      subtotal:8.00
     }];
       expect(calculateSubtotal_text).toEqual(actualText)
     });
