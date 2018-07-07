@@ -2,7 +2,9 @@ const main = require('../main/main');
 const {formatMenu,
         detailMenu,
         calculateSubtotal,
-        calculateFirstDiscount
+        calculateFirstDiscount,
+        calculateSecondDiscount,
+        claculateSum
 } = require('../main/main');
 const {loadAllItems}=require('../main/items');
 const {loadPromotions}=require('../main/promotions');
@@ -151,5 +153,41 @@ const {loadPromotions}=require('../main/promotions');
     const actualText = {type:'满30减6元',saveMoney:6}
       expect(calculateFirstDiscount_text).toEqual(actualText)
     });
+  
+   });
+   describe('Take out food', function () {
+
+    it('calculateFirstDiscount', function() {
+    //when
+    let inputs = ["ITEM0001 x 1", "ITEM0013 x 2", "ITEM0022 x 1"];
+    let loadAllItems_text=loadAllItems();
+    //console.log(loadAllItems_text);
+    let loadPromotions_text = loadPromotions();
+    let formatMenu_text=formatMenu(inputs);
+    let detailMenu_text=detailMenu(formatMenu_text,loadAllItems_text);
+    let calculateSubtotal_text = calculateSubtotal(detailMenu_text); 
+    let calculateSecondDiscount_text = calculateSecondDiscount(calculateSubtotal_text,loadPromotions_text);
+    
+    //then
+    const actualText = {type:'指定菜品半价',saveMoney:13}
+      expect(calculateSecondDiscount_text).toEqual(actualText)
+    });
+    describe('Take out food', function () {
+
+      it('calculateFirstDiscount', function() {
+      //when
+      let inputs = ["ITEM0001 x 1", "ITEM0013 x 2", "ITEM0022 x 1"];
+      let loadAllItems_text=loadAllItems();
+      //console.log(loadAllItems_text);
+      let loadPromotions_text = loadPromotions();
+      let formatMenu_text=formatMenu(inputs);
+      let detailMenu_text=detailMenu(formatMenu_text,loadAllItems_text);
+      let calculateSubtotal_text = calculateSubtotal(detailMenu_text); 
+      let calculateSecondDiscount_text = calculateSecondDiscount(calculateSubtotal_text,loadPromotions_text);
+      
+      //then
+      const actualText = {type:'指定菜品半价',saveMoney:13}
+        expect(calculateSecondDiscount_text).toEqual(actualText)
+      });
   
    });
