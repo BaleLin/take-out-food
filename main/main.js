@@ -17,8 +17,8 @@ function formatMenu(menuCollections){
 }
 function detailMenu(menuObjects,loadAllItems){
     let menudetaleObjects = [];
-            for(let menuObject of menuObjects){
-                for(let loadAllItem of loadAllItems){
+            menuObjects.map(menuObject=>{
+                 loadAllItems.map(loadAllItem=>{
                     if(menuObject.id===loadAllItem.id){
                        menudetaleObjects.push({
                            id:menuObject.id,
@@ -28,8 +28,8 @@ function detailMenu(menuObjects,loadAllItems){
 
                        });
                    }
-               }
-            } 
+               });
+            });
     return menudetaleObjects;
 }
 function calculateSubtotal(menudetaleObjects){
@@ -111,13 +111,13 @@ function produceList(menudetaleSubtotalObjects,menuDiscountbjects,sum){
   if(menuDiscountbjects!==null){
     str+="-----------------------------------\n";
       str+="使用优惠:\n";
-      let strNameCollection = "";
-      let tempObject = menuDiscountbjects.discountMenuName;
-     for(let strName of tempObject){
-        strNameCollection+=strName+'，';
-    } 
-    strNameCollection=strNameCollection.substring(0,strNameCollection.length-1);
-     if(menuDiscountbjects.type==="指定菜品半价"){
+      if(menuDiscountbjects.type==="指定菜品半价"){
+        let strNameCollection = "";
+        let tempObject = menuDiscountbjects.discountMenuName;
+        for(let strName of tempObject){
+            strNameCollection+=strName+'，';
+        } 
+        strNameCollection=strNameCollection.substring(0,strNameCollection.length-1);
         str+=`${menuDiscountbjects.type}(${strNameCollection})，省${menuDiscountbjects.saveMoney}元\n`
       }else{
         str+=`${menuDiscountbjects.type}，省${menuDiscountbjects.saveMoney}元\n`
