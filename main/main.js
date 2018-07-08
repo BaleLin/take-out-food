@@ -54,7 +54,7 @@ function calculateFirstDiscount(menudetaleSubtotalObjects,loadPromotions){
         menuDiscountbjects.type = loadPromotions[0].type;
         menuDiscountbjects.saveMoney = 0;
     }
-    console.log(menuDiscountbjects);
+    //console.log(menuDiscountbjects);
     return menuDiscountbjects;
 }
 function calculateSecondDiscount(menudetaleSubtotalObjects,loadPromotions){
@@ -72,7 +72,7 @@ function calculateSecondDiscount(menudetaleSubtotalObjects,loadPromotions){
     menuDiscountbjects.type = loadPromotions[1].type;
     menuDiscountbjects.saveMoney = sum;
     menuDiscountbjects.discountMenuName = tempMenuName;
-    console.log(menuDiscountbjects);
+    //console.log(menuDiscountbjects);
     return menuDiscountbjects;
 }
 function claculateSavemony(menudetaleSubtotalObjects,loadPromotions){
@@ -111,8 +111,14 @@ function produceList(menudetaleSubtotalObjects,menuDiscountbjects,sum){
   if(menuDiscountbjects!==null){
     str+="-----------------------------------\n";
       str+="使用优惠:\n";
-      if(menuDiscountbjects.type==="指定菜品半价"){
-        str+=`${menuDiscountbjects.type}(${menuDiscountbjects.tempMenuName})，省${menuDiscountbjects.saveMoney}元\n`
+      let strNameCollection = "";
+      let tempObject = menuDiscountbjects.discountMenuName;
+     for(let strName of tempObject){
+        strNameCollection+=strName+'，';
+    } 
+    strNameCollection=strNameCollection.substring(0,strNameCollection.length-1);
+     if(menuDiscountbjects.type==="指定菜品半价"){
+        str+=`${menuDiscountbjects.type}(${strNameCollection})，省${menuDiscountbjects.saveMoney}元\n`
       }else{
         str+=`${menuDiscountbjects.type}，省${menuDiscountbjects.saveMoney}元\n`
       }
@@ -120,7 +126,20 @@ function produceList(menudetaleSubtotalObjects,menuDiscountbjects,sum){
    str+=`-----------------------------------\n`
   str+=`总计：${sum}元\n`
   str+=`===================================\n`
-  console.log(str);
+  //console.log(str);
+  return str.trim();
+}
+function bestCharge(inputs){
+  let loadAllItems_text=loadAllItems();
+  //console.log(loadAllItems_text);
+  let loadPromotions_text = loadPromotions();
+  let formatMenu_text=formatMenu(inputs);
+  let detailMenu_text=detailMenu(formatMenu_text,loadAllItems_text);
+  let calculateSubtotal_text = calculateSubtotal(detailMenu_text); 
+  let claculateSavemony_test = claculateSavemony(calculateSubtotal_text,loadPromotions_text);
+  let claculateSum_test = claculateSum(calculateSubtotal_text,claculateSavemony_test);
+  let produceList_test = produceList(calculateSubtotal_text,claculateSavemony_test,claculateSum_test);
+    return produceList_test;
 }
 module.exports = {
     formatMenu,
@@ -130,5 +149,6 @@ module.exports = {
     calculateSecondDiscount,
     claculateSavemony,
     claculateSum,
-    produceList
+    produceList,
+    bestCharge
 }
