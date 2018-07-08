@@ -113,8 +113,7 @@ function produceList(menudetaleSubtotalObjects,menuDiscountbjects,sum){
       str+="使用优惠:\n";
       if(menuDiscountbjects.type==="指定菜品半价"){
         let strNameCollection = "";
-        let tempObject = menuDiscountbjects.discountMenuName;
-        for(let strName of tempObject){
+        for(let strName of menuDiscountbjects.discountMenuName){
             strNameCollection+=strName+'，';
         } 
         strNameCollection=strNameCollection.substring(0,strNameCollection.length-1);
@@ -126,7 +125,6 @@ function produceList(menudetaleSubtotalObjects,menuDiscountbjects,sum){
    str+=`-----------------------------------\n`
   str+=`总计：${sum}元\n`
   str+=`===================================\n`
-  //console.log(str);
   return str.trim();
 }
 function bestCharge(inputs){
