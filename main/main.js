@@ -41,7 +41,6 @@ function calculateSubtotal(menudetaleObjects){
         menudetaleObject.subtotal=parseInt(menudetaleObject.price)*parseInt(menudetaleObject.count);
         menudetaleSubtotalObjects.push(menudetaleObject);
     });
-   //console.log(menudetaleSubtotalObjects);
     return menudetaleSubtotalObjects;
 }
 function calculateFirstDiscount(menudetaleSubtotalObjects,loadPromotions){
@@ -63,20 +62,19 @@ function calculateFirstDiscount(menudetaleSubtotalObjects,loadPromotions){
 function calculateSecondDiscount(menudetaleSubtotalObjects,loadPromotions){
     let sum = 0;
     let menuDiscountbjects = {};
-    var tempMenuName = [];
+    let promotionName= [];
     menudetaleSubtotalObjects.forEach(menudetaleSubtotalObject=>{
-        loadPromotions[1].items.forEach(loadPromotion=>{
-            if(menudetaleSubtotalObject.id===loadPromotion){
-                sum += (menudetaleSubtotalObject.subtotal/2); 
-                tempMenuName.push(menudetaleSubtotalObject.name);
-            }
-           });
-    });
+        let tempPromotionId = loadPromotions[1].items.find(id=>id===menudetaleSubtotalObject.id)
+        if(tempPromotionId===menudetaleSubtotalObject.id){
+            sum += (menudetaleSubtotalObject.subtotal/2);
+            promotionName.push(menudetaleSubtotalObject.name);
+        }
+         
+     });
     menuDiscountbjects.type = loadPromotions[1].type;
     menuDiscountbjects.saveMoney = sum;
-    menuDiscountbjects.discountMenuName = tempMenuName;
-    //console.log(menuDiscountbjects);
-    return menuDiscountbjects;
+    menuDiscountbjects.discountMenuName = promotionName;
+     return menuDiscountbjects;
 }
 function claculateSavemony(menudetaleSubtotalObjects,loadPromotions){
     
