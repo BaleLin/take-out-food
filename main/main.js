@@ -95,11 +95,10 @@ function claculateSavemony(menudetaleSubtotalObjects,loadPromotions){
    
 }
 function claculateSum(menudetaleSubtotalObjects,menuDiscountbjects){
-    let sum = 0;
-     menudetaleSubtotalObjects.forEach(menudetaleSubtotalObject=>{
-            sum += menudetaleSubtotalObject.subtotal;
-        });
-    if(menuDiscountbjects!==null){
+   let sum = menudetaleSubtotalObjects.reduce((accumulator,menudetaleSubtotalObject)=>{
+        return accumulator + menudetaleSubtotalObject.subtotal;
+        },0);
+     if(menuDiscountbjects!==null){
         sum -= menuDiscountbjects.saveMoney;
     }else{
         return sum;
@@ -116,11 +115,7 @@ function produceList(menudetaleSubtotalObjects,menuDiscountbjects,sum){
       str+="使用优惠:\n";
       if(menuDiscountbjects.type==="指定菜品半价"){
         let strNameCollection = "";
-        for(let strName of menuDiscountbjects.discountMenuName){
-            strNameCollection+=strName+'，';
-        } 
-        strNameCollection=strNameCollection.substring(0,strNameCollection.length-1);
-        str+=`${menuDiscountbjects.type}(${strNameCollection})，省${menuDiscountbjects.saveMoney}元\n`
+       str+=`${menuDiscountbjects.type}(${menuDiscountbjects.discountMenuName.join("，")})，省${menuDiscountbjects.saveMoney}元\n`
       }else{
         str+=`${menuDiscountbjects.type}，省${menuDiscountbjects.saveMoney}元\n`
       }
@@ -128,7 +123,7 @@ function produceList(menudetaleSubtotalObjects,menuDiscountbjects,sum){
    str+=`-----------------------------------\n`
   str+=`总计：${sum}元\n`
   str+=`===================================\n`
-  return str.trim();
+  return str;
 }
 
 module.exports = {
