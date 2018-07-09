@@ -1,40 +1,43 @@
 // Write your cade below:
 const {loadAllItems}=require('../main/items');
 const {loadPromotions}=require('../main/promotions');
-function formatMenu(menuCollections){
-    let menuObjects = [];
-    menuCollections.map(menuCollection =>{
-            let spil = menuCollection.split("x");
-            let fomatStr=spil[0].replace(/(\s*$)/g,"")
-            menuObjects.push({
-                id:fomatStr,
-                count:parseInt(spil[1])
-            });
-        }
+function bestCharge(inputs){
+    let loadAllItems_text=loadAllItems();
+    let loadPromotions_text = loadPromotions();
+    let formatMenu_text=formatMenu(inputs);
+    let detailMenu_text=detailMenu(formatMenu_text,loadAllItems_text);
+    let calculateSubtotal_text = calculateSubtotal(detailMenu_text); 
+    let claculateSavemony_test = claculateSavemony(calculateSubtotal_text,loadPromotions_text);
+    let claculateSum_test = claculateSum(calculateSubtotal_text,claculateSavemony_test);
+    let produceList_test = produceList(calculateSubtotal_text,claculateSavemony_test,claculateSum_test);
+      return produceList_test;
+  }
+  function formatMenu(menuCollections){
+    
+    return  menuCollections.map(menuCollection =>{
+       let spil = menuCollection.split(" x ");
+       return {
+               id:spil[0],
+               count:parseInt(spil[1])
+                }
+            }
     );
-    //console.log(menuObjects);
-    return menuObjects;
 }
 function detailMenu(menuObjects,loadAllItems){
-    let menudetaleObjects = [];
-            menuObjects.map(menuObject=>{
-                 loadAllItems.map(loadAllItem=>{
-                    if(menuObject.id===loadAllItem.id){
-                       menudetaleObjects.push({
-                           id:menuObject.id,
-                           name:loadAllItem.name,
-                           count:menuObject.count,
-                           price:loadAllItem.price
+    return   menuObjects.map(menuObject=>{
+      let product = loadAllItems.find(loadAllItem=>menuObject.id===loadAllItem.id);
+      return {
+                 id:menuObject.id,
+                 name:product.name,
+                 count:menuObject.count,
+                 price:product.price
 
-                       });
-                   }
-               });
+             }
             });
-    return menudetaleObjects;
 }
 function calculateSubtotal(menudetaleObjects){
     let menudetaleSubtotalObjects = [];
-    menudetaleObjects.map(menudetaleObject=>{
+    menudetaleObjects.forEach(menudetaleObject=>{
         menudetaleObject.subtotal=parseInt(menudetaleObject.price)*parseInt(menudetaleObject.count);
         menudetaleSubtotalObjects.push(menudetaleObject);
     });
@@ -44,7 +47,7 @@ function calculateSubtotal(menudetaleObjects){
 function calculateFirstDiscount(menudetaleSubtotalObjects,loadPromotions){
     let sum = 0;
     let menuDiscountbjects = {};
-    menudetaleSubtotalObjects.map(menudetaleSubtotalObject=>{
+    menudetaleSubtotalObjects.forEach(menudetaleSubtotalObject=>{
         sum += menudetaleSubtotalObject.subtotal;
     });
     if(sum>=30){
@@ -61,8 +64,8 @@ function calculateSecondDiscount(menudetaleSubtotalObjects,loadPromotions){
     let sum = 0;
     let menuDiscountbjects = {};
     var tempMenuName = [];
-    menudetaleSubtotalObjects.map(menudetaleSubtotalObject=>{
-        loadPromotions[1].items.map(loadPromotion=>{
+    menudetaleSubtotalObjects.forEach(menudetaleSubtotalObject=>{
+        loadPromotions[1].items.forEach(loadPromotion=>{
             if(menudetaleSubtotalObject.id===loadPromotion){
                 sum += (menudetaleSubtotalObject.subtotal/2); 
                 tempMenuName.push(menudetaleSubtotalObject.name);
@@ -93,7 +96,7 @@ function claculateSavemony(menudetaleSubtotalObjects,loadPromotions){
 }
 function claculateSum(menudetaleSubtotalObjects,menuDiscountbjects){
     let sum = 0;
-     menudetaleSubtotalObjects.map(menudetaleSubtotalObject=>{
+     menudetaleSubtotalObjects.forEach(menudetaleSubtotalObject=>{
             sum += menudetaleSubtotalObject.subtotal;
         });
     if(menuDiscountbjects!==null){
@@ -127,18 +130,7 @@ function produceList(menudetaleSubtotalObjects,menuDiscountbjects,sum){
   str+=`===================================\n`
   return str.trim();
 }
-function bestCharge(inputs){
-  let loadAllItems_text=loadAllItems();
-  //console.log(loadAllItems_text);
-  let loadPromotions_text = loadPromotions();
-  let formatMenu_text=formatMenu(inputs);
-  let detailMenu_text=detailMenu(formatMenu_text,loadAllItems_text);
-  let calculateSubtotal_text = calculateSubtotal(detailMenu_text); 
-  let claculateSavemony_test = claculateSavemony(calculateSubtotal_text,loadPromotions_text);
-  let claculateSum_test = claculateSum(calculateSubtotal_text,claculateSavemony_test);
-  let produceList_test = produceList(calculateSubtotal_text,claculateSavemony_test,claculateSum_test);
-    return produceList_test;
-}
+
 module.exports = {
     formatMenu,
     detailMenu,

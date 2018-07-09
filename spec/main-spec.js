@@ -25,6 +25,7 @@ const {loadPromotions}=require('../main/promotions');
     { id: 'ITEM0022', count: 1 } ];
       expect(formatMenu_text).toEqual(actualText)
     });
+    
   
    });
    describe('detailMenu ', function () {
